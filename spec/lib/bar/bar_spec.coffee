@@ -27,7 +27,7 @@ describe 'Morris.Bar', ->
         $('#graph').find("rect[fill='#{defaults.verticalGridColor}']").size().should.equal 2
       it 'should have to bars with verticalGrid.color', ->
         chart = Morris.Bar $.extend {}, defaults
-        $('#graph').find("rect[fill-opacity='#{defaults.verticalGridOpacity}']").size().should.equal 2
+        $('#graph').find("rect[opacity='#{defaults.verticalGridOpacity}']").size().should.equal 2
 
   describe 'svg structure', ->
     defaults =
