@@ -481,23 +481,29 @@ class Morris.Grid extends Morris.EventEmitter
         .attr('stroke', color)
         .attr('stroke-width', @options.eventStrokeWidth)
 
-  drawYAxisLabel: (xPos, yPos, text) ->
+  drawYAxisLabel: (xPos, yPos, text, color) ->
+    if typeof color is 'undefined'
+        color = @options.gridTextColor
+
     label = @raphael.text(xPos, yPos, text)
       .attr('font-size', @options.gridTextSize)
       .attr('font-family', @options.gridTextFamily)
       .attr('font-weight', @options.gridTextWeight)
-      .attr('fill', @options.gridTextColor)
+      .attr('fill', color)
     if @options.yLabelAlign == 'right'
       label.attr('text-anchor', 'end')
     else
       label.attr('text-anchor', 'start')
 
-  drawXAxisLabel: (xPos, yPos, text) ->
+  drawXAxisLabel: (xPos, yPos, text, color) ->
+    if typeof color is 'undefined'
+        color = @options.gridTextColor
+
     @raphael.text(xPos, yPos, text)
       .attr('font-size', @options.gridTextSize)
       .attr('font-family', @options.gridTextFamily)
       .attr('font-weight', @options.gridTextWeight)
-      .attr('fill', @options.gridTextColor)
+      .attr('fill', color)
 
   drawGridLine: (path) ->
     @raphael.path(path)

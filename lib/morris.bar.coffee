@@ -176,20 +176,28 @@ class Morris.Bar extends Morris.Grid
             lastTop += size
             @drawBar(left, top, barWidth, size, @colorFor(row, sidx, 'bar'),
                 @options.barOpacity, @options.barRadius)
+            if @options.inBarValue
+              label = @drawXAxisLabel(
+                left + barWidth / 2,
+                top - @options.inBarValueMinTopMargin,
+                @labelContentForRow(idx, sidx),
+                @options.inBarValueTextColor
+                )
+              if top - @options.inBarValueMinTopMargin + label.getBBox().height > bottom
+                label.attr('y', bottom - label.getBBox().height, 0)
           else
             lastTop -= size
             @drawBar(top, left, size, barWidth, @colorFor(row, sidx, 'bar'),
                 @options.barOpacity, @options.barRadius)
-
-            if @options.inBarValue and
-                barWidth > @options.gridTextSize + 2*@options.inBarValueMinTopMargin
-              barMiddle = left + 0.5 * barWidth
-              @raphael.text(bottom - @options.inBarValueRightMargin, barMiddle, @yLabelFormat(row.y[sidx], sidx))
-                .attr('font-size', @options.gridTextSize)
-                .attr('font-family', @options.gridTextFamily)
-                .attr('font-weight', @options.gridTextWeight)
-                .attr('fill', @options.inBarValueTextColor)
-                .attr('text-anchor', 'end')
+            if @options.inBarValue
+              label = @drawYAxisLabel(
+                top + size + @options.inBarValueRightMargin,
+                left + barWidth / 2,
+                @labelContentForRow(idx, sidx),
+                @options.inBarValueTextColor
+                )
+              if size + @options.inBarValueRightMargin < label.getBBox().width
+                label.attr('x', top + label.getBBox().width + Math.abs(@options.inBarValueRightMargin))
 
         else
           null
@@ -277,6 +285,14 @@ class Morris.Bar extends Morris.Grid
       x = @left + 0.5 * @width
       y = @top + (index + 0.5) * @height / @data.length
       [content, x, y, true]
+
+  labelContentForRow: (index, sidx) ->
+    row = @data[index]
+    content = ''
+    y = row.y[sidx]
+    content += '' + @options.labels[sidx] + ':' + (@yLabelFormat(y)) + ' '
+    if typeof @options.labelCallback is 'function'
+      content = @options.labelCallback(index, @options, content, sidx)
 
   drawBar: (xPos, yPos, width, height, barColor, opacity, radiusArray) ->
     maxRadius = Math.max(radiusArray...)
