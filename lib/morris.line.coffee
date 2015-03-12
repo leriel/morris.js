@@ -8,7 +8,7 @@ class Morris.Line extends Morris.Grid
   init: ->
     # Some instance variables for later
     if @options.hideHover isnt 'always'
-      @hover = new Morris.Hover(parent: @el)
+      @hover = new Morris.Hover(parent: @el, class: @options.class)
       @on('hovermove', @onHoverMove)
       @on('hoverout', @onHoverOut)
       @on('gridclick', @onGridClick)
